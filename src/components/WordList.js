@@ -1,11 +1,14 @@
 import { checkKoreanSpelling } from '../utils/checkKorean.js';
-import { getItem, setItem } from '../utils/sessionStorage.js';
+import { getItem, setItem, removeItem } from '../utils/sessionStorage.js';
 import { checkSameInitial } from '../utils/checkSameInitial.js';
 
 export default class WordList {
   constructor({ $target }) {
     this.wordListWrapper = document.createElement('section');
     this.wordList = document.createElement('ul');
+
+    this.wordListWrapper.className = 'word-list-wrapper';
+    this.wordList.className = 'word-list';
 
     $target.appendChild(this.wordListWrapper);
 
@@ -35,6 +38,11 @@ export default class WordList {
     })
   }
 
+  allClearWordList() {
+    removeItem('wordList');
+    document.querySelector('.word-list').innerHTML = '';
+  }
+
   render() {
     // 한글 단어 입력 form 구성
     const inputWordWrapper = document.createElement('form');
@@ -45,6 +53,9 @@ export default class WordList {
 
     const addButton = document.createElement('button');
     addButton.innerText = '등록';
+
+    const allClearButton = document.createElement('button');
+    allClearButton.innerText = '전부 삭제';
 
     inputWordBox.addEventListener('keyup', e => {
       let newValue = this.validKoreanInitial(e.target.value);
@@ -86,9 +97,17 @@ export default class WordList {
     inputWordWrapper.appendChild(addButton);
 
     // 저장된 단어 리스트 표시
-    this.showWordList(getItem('wordList'));
+    if (getItem('wordList') !== null) {
+      this.showWordList(getItem('wordList'));
+    }
+
+    // 단어 전부 삭제 기능 구현
+    allClearButton.addEventListener('click', () => {
+      this.allClearWordList();
+    })
 
     this.wordListWrapper.appendChild(inputWordWrapper);
+    this.wordListWrapper.appendChild(allClearButton);
     this.wordListWrapper.appendChild(this.wordList);
   }
 }

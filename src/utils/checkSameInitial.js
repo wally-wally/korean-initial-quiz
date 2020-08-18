@@ -7,6 +7,5 @@ export function checkSameInitial(keyword) {
     uni -= ga;
     str += f[parseInt(uni / 588)];
   }
-  console.log(str)
   return str;
 }

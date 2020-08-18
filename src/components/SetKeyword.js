@@ -1,6 +1,6 @@
 import { checkKorean } from '../utils/checkKorean.js';
 import { doubleConsonants } from '../utils/doubleConsonants.js';
-import { setItem, getItem } from '../utils/sessionStorage.js';
+import { setItem, getItem, removeItem } from '../utils/sessionStorage.js';
 
 export default class SetKeyword {
   constructor({ $target, keywords }) {
@@ -47,6 +47,8 @@ export default class SetKeyword {
     resetButton.addEventListener('click', () => {
       this.toggleShowKeywordBox('block', 'none');
       document.querySelector('.now-keyword-wrapper').innerHTML = '';
+      removeItem('wordList');
+      document.querySelector('.word-list').innerHTML = '';
     })
     
     nowKeywordWrapper.appendChild(nowKeyword);
